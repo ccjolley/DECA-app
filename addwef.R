@@ -83,11 +83,5 @@ wef_literacy <- read_excel('../DECA/data/WEF_NRI_2012-2016_Historical_Dataset.xl
 # remove variables duplicated across two datasets
 wef_public <- select(wef_public,-tech_avail)
 
-plot_frame_new <- full_join(plot_frame,wef_private,by='country') %>%
-  full_join(wef_public,by='country') %>% 
-  full_join(wef_literacy,by='country')
 
-# sanity check
-setdiff(plot_frame_new$country,plot_frame$country)
-c(nrow(plot_frame_new),nrow(plot_frame))
-c(ncol(plot_frame_new),ncol(plot_frame))
+

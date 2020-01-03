@@ -1,6 +1,5 @@
 # Development TODOs for DECA shiny app
 
-# Double-check that everything included in lit reviews is available
 # make a utility file to re-generate plot_data.csv from scratch
 
 # Single scatterplot with multiple selectable countries

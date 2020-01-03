@@ -325,7 +325,7 @@ deca_plot <- function(pname,country_name,show_pred=FALSE,shade_fraction=0.5,
 #
 #deca_plot('Censorship and civil liberties','Kenya') +
 #  theme(plot.margin=unit(c(5.5,5.5,30,5.5),'points'))
-deca_plot('WEF public sector','Kenya')
+#deca_plot('WEF public sector','Kenya')
 
 # resize plots based on number of rows
 num_rows <- function(pname,country_name) {

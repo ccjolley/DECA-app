@@ -205,8 +205,8 @@ rename_infra <- tibble(
              'mci_infra_spectrum','spectrum_dd','spectrum_low','spectrum_high'),
   label=c('Infrastructure (MCI subindex)','Network coverage (MCI dimension)',
           '2G coverage','3G coverage','4G coverage',
-          'Nework performance (MCI dimension)','Mobile download speed','Mobile upload speed','Mobile latency',
-          'Enabling infrastructure (MCI dimension)','Electricy access','Interational internet bandwidth',
+          'Network performance (MCI dimension)','Mobile download speed','Mobile upload speed','Mobile latency',
+          'Enabling infrastructure (MCI dimension)','Electricity access','Interational internet bandwidth',
           'Secure internet servers','Top-level domains per capita','IXPs per capita','Spectrum (MCI dimension)',
           'Digital dividend spectrum','Spectrum below 1 GHz','Spectrum 1-3 GHz'),
   flip=FALSE

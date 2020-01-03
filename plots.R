@@ -68,9 +68,11 @@ rename_afford <- tibble(
 # Censorship, information integrity, and digital rights
 ###############################################################################
 rename_censor <- tibble(
-  variable=c('v2smgovfilprc','v2x_civlib','v2smregcon','v2smarrest','v2x_clpol','v2smdefabu',
-             'v2smgovshut','v2smgovsm','v2smgovsmalt','v2smgovsmcenprc','v2x_clpriv','press_freedom'),
-  label=c("Gov filtering in practice","Gov shutdown in practice","Social media shutdown in practice",
+  variable=c('v2smgovfilprc','v2smgovshut','v2smgovsm',
+             'v2smgovsmalt','v2smgovsmcenprc','v2smregcon',
+             'v2smdefabu','v2smarrest','v2x_civlib','v2x_clpol',
+             'v2x_clpriv','press_freedom'),
+  label=c("Gov filtering in practice","Gov shutdown in practice","Social media shutdowns",
           "Social media alternatives","Social media censorship","Internet legal regulation content",
           "Abuse of defamation/copyright law by elites","Arrests for political content","Civil liberties",
           "Political civil liberties","Private civil liberties","Press freedom (RSF)")
@@ -106,9 +108,9 @@ rename_info <- tibble(
 # Cybersecurity
 ###############################################################################
 rename_cyber <- tibble(
-  label=c('Gov cyber capacity (VDem)','Political parties cyber capacity (VDem)',
+  label=c('Gov cyber capacity','Political parties cyber capacity',
           'Global Cybersecurity Index (ITU)','National Cyber Security Index (Estonia)',
-          'Gov filtering capacity (VDem)','Gov shutdown capacity (VDem)'),
+          'Gov filtering capacity','Gov shutdown capacity'),
   variable=c('v2smgovcapsec','v2smpolcap','itu_gci','ncsi','v2smgovfilcap',
              'v2smgovshutcap'),
   flip=FALSE
@@ -122,18 +124,18 @@ rename_society <- tibble(
              'v2smonex','v2smonper','v2smmefra','v2smorgviol','v2smorgavgact','v2smorgelitact',
              'v2smcamp','v2smpolsoc','v2smpolhate','open_data',
              'open_gov','public_laws','right_to_info','civic_part','complaint'),
-  label=c('Civil liberties (VDem)','Political civil liberties (VDem)',
-          'Private civil liberties (VDem)','Content & Services (GSMA)',
+  label=c('Civil liberties','Political civil liberties',
+          'Private civil liberties','Content & Services (GSMA)',
           'Laws relating to ICTs (WEF)','Environment subindex (WEF)',
-          "Online media existence (VDem)",
-          "Online media perspectives (VDem)",
-          "Online media fractionalization (VDem)",
-          "Use of social media to organize offline violence (VDem)",
-          "Average people’s use of social media to organize offline action (VDem)",
-          "Elites’ use of social media to organize offline action (VDem)",
-          "Party/candidate use of social media in campaigns (VDem)",
-          "Polarization of society (VDem)",
-          "Political parties hate speech (VDem)",'Open Data Index (OKF)',
+          "Online media existence",
+          "Online media perspectives",
+          "Online media fractionalization",
+          "Use of social media to organize offline violence",
+          "Average people’s use of social media to organize offline action",
+          "Elites’ use of social media to organize offline action",
+          "Party/candidate use of social media in campaigns",
+          "Polarization of society",
+          "Political parties hate speech",'Open Data Index (OKF)',
           'Open government (WJP/J2SR)','Publicized laws and gov data (WJP)',
           'Right to information (WJP)','Civic participation (WJP)','Complaint mechanisms (WJP)'),
   flip=FALSE
@@ -229,6 +231,37 @@ rename_trade <- tibble(
 # (see China, for example)
 
 ###############################################################################
+# WEF
+###############################################################################
+rename_wef_private <- tibble(
+  variable = c('tech_abs','inno_capacity','pct_patents','b2b_use','b2c_use','staff_training',
+               'tech_avail'),
+  label = c("Firm-level tech absorption","Innovation capacity",
+            "PCT patent applications","ICT use for B2B",
+            "B2C Internet use","Extent of staff training",'Latest tech available'),
+  flip=FALSE
+)
+
+rename_wef_public <- tibble(
+  variable = c('ict_vision','online_services','ict_promotion','ict_gov_efficiency','e_participaton','gov_procure',
+               'tech_avail'),
+  label = c("Importance of ICTs to gov’t vision", "Government Online Service Index",
+            "Gov’t success in ICT promotion","ICT improves gov't services",
+            "Value of gov't websites","Gov’t procurement of advanced tech",'Latest tech available'),
+  flip=FALSE
+)
+
+
+rename_wef_literacy <- tibble(
+  variable = c('tert_enroll','mgmt_school','ed_quality','stem_quality','sec_enroll',
+               'adult_lit','knowledge_jobs','internet_schools'),
+  label = c('Tertiary enrollment (gross)','Mgmt. school quality','Ed system quality',
+            'Math & science ed quality','Secondary enrollment (gross)','Adult literacy',
+            'Knowledge-intensive jobs','Internet in schools'),
+  flip=FALSE
+)
+
+###############################################################################
 # One plotting function to rule them all
 ###############################################################################
 
@@ -236,13 +269,21 @@ rename_all <- rbind(rename_access,rename_afford,rename_barrier,rename_censor,
                     rename_fotn,rename_info,rename_privacy,
                     rename_cyber,rename_eiu,rename_findex,rename_findex_gaps,
                     rename_infra,rename_mmri,rename_sdg4,
-                    rename_sdg4_gaps,rename_society,rename_trade)
+                    rename_sdg4_gaps,rename_society,rename_trade,
+                    rename_wef_literacy,rename_wef_private,rename_wef_public) %>%
+  distinct
+
+# sanity checks
+#rename_all$variable %>% table() %>% sort
+#rename_all$label %>% table() %>% sort
 
 plot_frame <- read_csv('plot_data.csv')
 
 plot_vars <- tibble(
   plot_name = c('Infrastructure','Access and use','Digital literacy',
-                'Digital literacy gender gaps','Affordability','Digital society',
+                'Digital literacy gender gaps','Affordability',
+                'WEF digital literacy','WEF private sector','WEF public sector',
+                'Digital society',
                 'Censorship and civil liberties','Freedom on the Net',
                 'Privacy and surveillance','Information integrity',
                 'Cybersecurity','EIU Global Microscope',
@@ -250,7 +291,8 @@ plot_vars <- tibble(
                 'Findex barriers to access','Findex access gaps',
                 'Digital trade and e-commerce'),
   varlist = sapply(list(rename_infra,rename_access,rename_sdg4,rename_sdg4_gaps,
-                        rename_afford,rename_society,rename_censor,
+                        rename_afford,rename_wef_literacy,rename_wef_private,rename_wef_public,
+                        rename_society,rename_censor,
                         rename_fotn,rename_privacy,rename_info,rename_cyber,
                         rename_eiu,rename_mmri,rename_findex,rename_barrier,
                         rename_findex_gaps,rename_trade),function(x) list(x$variable))
@@ -269,7 +311,7 @@ available_countries <- function(pname) {
 # unified plotting function
 
 deca_plot <- function(pname,country_name,show_pred=FALSE,shade_fraction=0.5,
-                       sort_order='none',num_pcs=5,overall_score='mean') {
+                       sort_order='none',num_pcs=5,overall_score='PC1') {
   v <- filter(plot_vars,plot_name==pname)$varlist %>% unlist
   rename <- rename_all %>% filter(variable %in% v)
   plot_frame %>%
@@ -280,4 +322,18 @@ deca_plot <- function(pname,country_name,show_pred=FALSE,shade_fraction=0.5,
 }
 
 # test run
-#deca_plot('Censorship and civil liberties','Kenya') + theme(text=element_text(family='Palatino'))
+#
+#deca_plot('Censorship and civil liberties','Kenya') +
+#  theme(plot.margin=unit(c(5.5,5.5,30,5.5),'points'))
+deca_plot('WEF public sector','Kenya')
+
+# resize plots based on number of rows
+num_rows <- function(pname,country_name) {
+  v <- filter(plot_vars,plot_name==pname)$varlist %>% unlist
+  na_count <- plot_frame %>% 
+    filter(country==country_name) %>% 
+    select(v) %>%
+    is.na %>%
+    rowSums
+  length(v) - na_count
+}

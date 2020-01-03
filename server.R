@@ -8,20 +8,9 @@
 #
 
 library(shiny)
-library(Cairo)
-library(extrafont)
-
-source('plots.R')
-
-CairoFonts(
-  regular="FreeSans:style=Medium",
-  bold="FreeSans:style=Bold",
-  italic="FreeSans:style=Oblique",
-  bolditalic="FreeSans:style=BoldOblique"
-)
 
 shinyServer(function(input, output, session) {
-  
+
   output$dotPlot <- renderPlot({
     output$pc_choice <- renderUI({
       if (input$pred) {
@@ -33,8 +22,15 @@ shinyServer(function(input, output, session) {
               shade_fraction=input$shade,
               overall_score=ifelse(input$score,'PC1','none'),
               show_pred=input$pred,
-              num_pcs=input$pcs) 
+              num_pcs=input$pcs) +
+      theme(axis.text.y = element_text(size=15),
+            title=element_text(size=20))
     })
+  
+  output$scaledPlot <- renderUI({
+    heightstr <- paste0(25*num_rows(input$plot_type,input$country) + 50,'px')
+    plotOutput('dotPlot',width='auto',height=heightstr)
+  })
   
   # filter drop-down options as explained in this blog post:
   # https://www.davidsolito.com/post/conditional-drop-down-in-shiny/

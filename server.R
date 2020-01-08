@@ -108,31 +108,30 @@ shinyServer(function(input, output, session) {
   output$plot_sources <- renderText({
     # TODO: somehow these still aren't quite right; don't work properly for some plots
     sources <- get_sources(input$plot_type)
-    # TODO: turn these into appropriate hyperlinks
     source_tbl <- tibble(short=c("A4AI","DTRI","EIU 3i","EIU Global Microscope","Estonia", 
                                  "Freedom House","GSMA MCI","GSMA MMRI","ITU","OKF", 
                                  "RSF","UNESCO","Universal Postal Union","V-Dem","WB Doing Business", 
                                  "WB Findex","WEF","WEF NRI","WJP","WomanStats"),
-                         full=c("Alliance for Affordable Internet<br>",
-                                "Digital Trade Restrictiveness Index<br>",
-                                "Inclusive Internet Index<br>",
-                                "EIU Global Microscope<br>",
-                                "Estonia<br>", 
-                                "Freedom House<br>",
-                                "GSMA Mobile Connectivity Index<br>",
-                                "GSMA Mobile Money Regulatory Index<br>",
-                                "International Telecommunications Union<br>",
-                                "Open Knowledge Foundation<br>", 
-                                "Reporters Without Borders<br>",
-                                "UNESCO<br>",
-                                "Universal Postal Union<br>",
-                                "V-Dem<br>",
-                                "WB Doing Business<br>", 
-                                "WB Findex<br>",
-                                "WEF<br>",
-                                "WEF Networkod Readiness Index<br>",
-                                "World Justice Project<br>",
-                                "WomanStats<br>"))
+                         full=c('<a href="https://a4ai.org/affordability-report/data/?_year=2019&indicator=INDEX">Alliance for Affordable Internet</a><br>',
+                                '<a href="https://ecipe.org/dte/dte-report/">Digital Trade Restrictiveness Index</a><br>',
+                                '<a href="https://theinclusiveinternet.eiu.com/">Inclusive Internet Index</a><br>',
+                                '<a href="https://www.eiu.com/public/topical_report.aspx?campaignid=microscope2019">EIU Global Microscope</a><br>',
+                                '<a href="https://ncsi.ega.ee/">National Cyber Security Index</a><br>', 
+                                '<a href="https://freedomhouse.org/report/freedom-net/freedom-net-2018/rise-digital-authoritarianism">Freedom House</a><br>',
+                                '<a href="http://www.mobileconnectivityindex.com/>GSMA Mobile Connectivity Index</a><br>',
+                                '<a href="https://www.gsma.com/mobilemoneymetrics/#regulatory-index">GSMA Mobile Money Regulatory Index</a><br>',
+                                '<a href="https://www.itu.int/en/ITU-D/Statistics/Pages/stat/default.aspx">International Telecommunications Union</a><br>',
+                                '<a href="https://index.okfn.org/place/">Open Knowledge Foundation</a><br>', 
+                                '<a href="https://rsf.org/en/2019-world-press-freedom-index-cycle-fear">Reporters Without Borders</a><br>',
+                                '<a href="http://tcg.uis.unesco.org/">UNESCO: SDG4 indicators</a><br>',
+                                '<a href="http://www.upu.int/en/the-upu/strategy/2ipd.html">Universal Postal Union</a><br>',
+                                '<a href="https://www.v-dem.net/en/">Varieties of Democracy</a><br>',
+                                '<a href="https://www.doingbusiness.org/">World Bank: Doing Business</a><br>', 
+                                '<a href="https://globalfindex.worldbank.org/">World Bank: Global Findex</a><br>',
+                                '<a href="https://www.weforum.org/reports/the-global-information-technology-report-2016">WEF Global Information Technology Report</a><br>',
+                                '<a href="https://reports.weforum.org/global-information-technology-report-2016/networked-readiness-index/">WEF Networked Readiness Index</a><br>',
+                                '<a href="https://worldjusticeproject.org/our-work/research-and-data/wjp-rule-law-index-2019">World Justice Project</a><br>',
+                                '<a href="http://www.womanstats.org/">WomanStats</a><br>'))
     
     source_str <- filter(source_tbl,short %in% sources)$full %>% paste(collapse='')
     paste0('<b>Sources:</b><br><br>',source_str)

@@ -10,26 +10,74 @@
 library(shiny)
 
 shinyServer(function(input, output, session) {
-
+  
+  # filter drop-down options as explained in this blog post:
+  # https://www.davidsolito.com/post/conditional-drop-down-in-shiny/
+  # country_choice <- reactive({
+  #   available_countries(input$plot_type)
+  # })
+  # observe(
+  #   updateSelectizeInput(session, "country", choices = country_choice())
+  # )
+  
+  output$plot_options <- renderUI({
+    if (input$plot_category == 'Summary plot') {
+      list(
+        selectizeInput('plot_type','Select a plot:',choices=plot_list),
+        uiOutput('country_choice'),
+        checkboxInput('score','Show summary score?',TRUE),
+        sliderInput('shade','Fraction to shade:',0,1,0.5),
+        checkboxInput('pred','Show predictions?',FALSE),
+        uiOutput('pc_choice'),
+        hr(),
+        checkboxInput('help_me','Show help text?',FALSE),
+        checkboxInput('show_sources','Show sources?',FALSE),
+        htmlOutput('how_to')
+      )
+    } else if (input$plot_category == 'Scatter plot') {
+      list(
+        selectizeInput('plot_type','Select a plot:',choices=scatter_list),
+        selectizeInput('country_list','Highlight countries:',choices=all_countries,
+                       multiple=TRUE)
+      )
+    }
+  })
+  
+  output$country_choice <- renderUI({
+    country_choices <- available_countries(input$plot_type)
+    selectizeInput('country','Select a country:',choices=country_choices)
+  })
+  
+  output$pc_choice <- renderUI({
+    if (input$pred) {
+      numericInput('pcs','Number of principal components:',5,min=1,max=30)
+    }
+  })
+  
   output$dotPlot <- renderPlot({
-    output$pc_choice <- renderUI({
-      if (input$pred) {
-        numericInput('pcs','Number of principal components:',5,min=1,max=30)
-      }
-     })
     deca_plot(input$plot_type,
               input$country,
               shade_fraction=input$shade,
               overall_score=ifelse(input$score,'PC1','none'),
               show_pred=input$pred,
-              num_pcs=input$pcs) +
+              num_pcs=input$pcs,
+              show_sources=input$show_sources) +
       theme(axis.text.y = element_text(size=15),
             title=element_text(size=20))
     })
   
-  output$scaledPlot <- renderUI({
-    heightstr <- paste0(25*num_rows(input$plot_type,input$country) + 50,'px')
-    plotOutput('dotPlot',width='auto',height=heightstr)
+  output$scatterPlot <- renderPlot({
+    deca_scatter(input$plot_type,input$country_list) +
+      theme(title=element_text(size=15))
+  })
+  
+  output$main_plot <- renderUI({
+    if (input$plot_category == 'Summary plot') {
+      heightstr <- paste0(25*num_rows(input$plot_type,input$country) + 50,'px')
+      plotOutput('dotPlot',width='auto',height=heightstr)      
+    } else if (input$plot_category == 'Scatter plot') {
+      plotOutput('scatterPlot')
+    }
   })
   
   output$how_to <- renderText({
@@ -57,14 +105,37 @@ shinyServer(function(input, output, session) {
     }
     if (input$help_me) { str }
   })
-  
-  
-  # filter drop-down options as explained in this blog post:
-  # https://www.davidsolito.com/post/conditional-drop-down-in-shiny/
-  country_choice <- reactive({
-    available_countries(input$plot_type)
+  output$plot_sources <- renderText({
+    # TODO: somehow these still aren't quite right; don't work properly for some plots
+    sources <- get_sources(input$plot_type)
+    # TODO: turn these into appropriate hyperlinks
+    source_tbl <- tibble(short=c("A4AI","DTRI","EIU 3i","EIU Global Microscope","Estonia", 
+                                 "Freedom House","GSMA MCI","GSMA MMRI","ITU","OKF", 
+                                 "RSF","UNESCO","Universal Postal Union","V-Dem","WB Doing Business", 
+                                 "WB Findex","WEF","WEF NRI","WJP","WomanStats"),
+                         full=c("Alliance for Affordable Internet<br>",
+                                "Digital Trade Restrictiveness Index<br>",
+                                "Inclusive Internet Index<br>",
+                                "EIU Global Microscope<br>",
+                                "Estonia<br>", 
+                                "Freedom House<br>",
+                                "GSMA Mobile Connectivity Index<br>",
+                                "GSMA Mobile Money Regulatory Index<br>",
+                                "International Telecommunications Union<br>",
+                                "Open Knowledge Foundation<br>", 
+                                "Reporters Without Borders<br>",
+                                "UNESCO<br>",
+                                "Universal Postal Union<br>",
+                                "V-Dem<br>",
+                                "WB Doing Business<br>", 
+                                "WB Findex<br>",
+                                "WEF<br>",
+                                "WEF Networkod Readiness Index<br>",
+                                "World Justice Project<br>",
+                                "WomanStats<br>"))
+    
+    source_str <- filter(source_tbl,short %in% sources)$full %>% paste(collapse='')
+    paste0('<b>Sources:</b><br><br>',source_str)
   })
-  observe(
-    updateSelectizeInput(session, "country", choices = country_choice())
-  )
+  
 })

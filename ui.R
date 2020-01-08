@@ -1,14 +1,21 @@
 # Development TODOs for DECA shiny app
 
-# Single scatterplot with multiple selectable countries
-# Add mouse-over to view names of other countries?
-# Add ability to select from a list of standard plots
+# hyperlinked list of data sources shown in a given plot (probably below plot?)
+
+# radio buttons with options to filter comparison countries (by geography and income)
 
 # re-calculate PCs; add to available plots
 
 # Design workflow that allows people to quickly generate all plots for desk review
+# Key thing here is giving country selection priority over plot type selection;
+# people are more likely to want to see a bunch of plots for the same country
+# than vice versa
 
 # Design a new visualization for gender gaps -- maybe a barbell plot?
+
+# Add standard description of how normalization works
+
+# BUG: Should it be re-imputing everything each time I change the number of PCs? Probably not.
 
 library(shiny)
 
@@ -18,23 +25,17 @@ shinyUI(fluidPage(
     tags$style(HTML("hr {border-top: 1px solid #CFCDC9;}"))
   ),
   
-  titlePanel("DECA app (alpha)"),
+  titlePanel("DECA app (alpha version)"),
   
   sidebarLayout(
     sidebarPanel(
-      selectizeInput('plot_type','Select a plot:',choices=plot_list),
-      selectizeInput('country','Select a country:',choices=all_countries),
-      checkboxInput('score','Show summary score?',TRUE),
-      sliderInput('shade','Fraction to shade:',0,1,0.5),
-      checkboxInput('pred','Show predictions?',FALSE),
-      uiOutput('pc_choice'),
-      hr(),
-      checkboxInput('help_me','Show help text?',FALSE),
-      htmlOutput('how_to')
+      radioButtons('plot_category','Plot category:',choices=c('Summary plot','Scatter plot')),
+      uiOutput('plot_options')
     ),
     
     mainPanel(
-       uiOutput("scaledPlot")
+       uiOutput("main_plot"),
+       htmlOutput('plot_sources')
     )
   )
 ))

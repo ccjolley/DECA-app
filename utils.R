@@ -162,13 +162,13 @@ usaid_countries <- c('Afghanistan','Albania','Angola','Armenia','Azerbaijan',
                      'Guyana','Haiti','Honduras','India','Indonesia','Iraq',
                      'Jamaica','Jordan','Kazakhstan',
                      'Kenya','Kosovo','Kyrgyzstan','Laos','Lebanon','Lesotho',
-                     'Liberia','Libya','Macedonia','Madagascar','Malawi','Maldives',
+                     'Liberia','Libya','North Macedonia','Madagascar','Malawi','Maldives',
                      'Mali','Mauritania','Mexico','Moldova','Mongolia','Montenegro',
                      'Morocco','Mozambique','Namibia','Nepal','Nicaragua','Niger',
                      'Nigeria','Pakistan','Panama','Paraguay','Peru','Philippines',
                      'Republic of the Congo','Rwanda','Senegal','Republic of Serbia','Sierra Leone',
                      'Somalia','South Africa','South Sudan','Sri Lanka','Sudan','Syria',
-                     'Tajikistan','United Republic of Tanzania','Thailand','East Timor','Tunisia','Turkmenistan',
+                     'Tajikistan','Tanzania','Thailand','East Timor','Tunisia','Turkmenistan',
                      'Uganda','Ukraine','Uzbekistan','Venezuela','Vietnam',
                      'West Bank and Gaza','Yemen','Zambia','Zimbabwe')
 
@@ -196,7 +196,7 @@ non_usaid_countries <- c("Algeria","Andorra","Antarctica","Antigua and Barbuda",
                          "Spain","Suriname","Sweden","Switzerland",
                          "Taiwan","The Bahamas","Togo","Tonga",
                          "Trinidad and Tobago","Turkey","United Arab Emirates","United Kingdom",
-                         "United States of America","Uruguay","Vanuatu","Vatican",
+                         "United States","Uruguay","Vanuatu","Vatican",
                          "Western Sahara")
 
 all_countries <- c(usaid_countries,non_usaid_countries) %>% sort
@@ -208,14 +208,14 @@ africa <- c('Angola','Benin','Botswana','Burkina Faso','Burundi','Cameroon',
             'Ghana','Guinea','Kenya','Lesotho','Liberia','Madagascar','Malawi',
             'Mali','Mauritania','Mozambique','Namibia','Niger','Nigeria',
             'Republic of the Congo','Rwanda','Senegal','Sierra Leone','Somalia',
-            'South Africa','South Sudan','Sudan','United Republic of Tanzania',
+            'South Africa','South Sudan','Sudan','Tanzania',
             'Uganda','Zambia','Zimbabwe')
 asia <- c('Bangladesh','Myanmar','Cambodia','China','India','Indonesia',
           'Kazakhstan','Kyrgyzstan','Laos','Maldives','Nepal','Philippines',
           'Sri Lanka','Tajikistan','Thailand','East Timor','Turkmenistan',
           'Uzbekistan','Vietnam','Afghanistan','Pakistan','Mongolia')
 e_and_e <- c('Albania','Armenia','Azerbaijan','Belarus','Bosnia and Herzegovina',
-             'Cyprus','Georgia','Kosovo','Macedonia','Moldova','Montenegro',
+             'Cyprus','Georgia','Kosovo','North Macedonia','Moldova','Montenegro',
              'Russia','Republic of Serbia','Ukraine')
 lac <- c('Bolivia','Brazil','Colombia','Cuba','Dominican Republic','Ecuador',
          'El Salvador','Guatemala','Haiti','Honduras','Jamaica','Mexico',
@@ -227,7 +227,7 @@ me <- c('Egypt','Iraq','Jordan','Lebanon','Libya','Morocco','Syria',
 low_income <- c('Afghanistan','Guinea-Bissau','Sierra Leone','Benin','Haiti',
                 'Somalia','Burkina Faso','North Korea','South Sudan','Burundi',	
                 'Liberia','Syria','Central African Republic','Madagascar','Tajikistan',
-                'Chad','Malawi','United Republic of Tanzania','Comoros','Mali',
+                'Chad','Malawi','Tanzania','Comoros','Mali',
                 'Togo','Democratic Republic of the Congo','Mozambique','Uganda',
                 'Eritrea','Nepal','Yemen','Ethiopia','Niger','Zimbabwe','Gambia',
                 'Rwanda','Guinea','Senegal')
@@ -245,7 +245,7 @@ umic <- c('Albania','Fiji','Namibia','Algeria','Gabon','Nauru','American Samoa',
           'Bosnia and Herzegovina','Jamaica','Republic of Serbia','Botswana',
           'Jordan','South Africa','Brazil','Kazakhstan','Saint Lucia','Bulgaria',
           'Lebanon','Saint Vincent and the Grenadines','China','Libya','Suriname',
-          'Colombia','Macedonia','Thailand','Costa Rica','Malaysia','Tonga',
+          'Colombia','North Macedonia','Thailand','Costa Rica','Malaysia','Tonga',
           'Cuba','Maldives','Turkey','Dominica','Marshall Islands','Turkmenistan',
           'Dominican Republic','Mauritius','Tuvalu','Equatorial Guinea','Mexico',
           'Venezuela','Ecuador','Montenegro')
@@ -262,7 +262,7 @@ high_income <- c('Andorra','Germany','Oman','Antigua and Barbuda','Gibraltar','P
                  'Cyprus','Macao','Taiwan','Czechia','Malta','Trinidad and Tobago','Denmark',
                  'Monaco','Turks and Caicos Islands','Estonia','Netherlands',
                  'United Arab Emirates','Faroe Islands','New Caledonia','United Kingdom',
-                 'Finland','New Zealand','United States of America','France',
+                 'Finland','New Zealand','United States','France',
                  'Northern Mariana Islands','Uruguay','French Polynesia','Norway',
                  'Virgin Islands (U.S.)')
 
@@ -363,7 +363,7 @@ highlight_scatter <- function(df,highlight_countries,f=0.03) {
     geom_point(data=filter(plotme,highlight),size=3,shape=1) +
     theme_USAID + colors_USAID +
     theme(legend.position = 'none') +
-    geom_text_repel() 
+    geom_text_repel(size=5) 
 }
 
 

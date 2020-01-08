@@ -13,13 +13,16 @@ rename_access <- tibble(
              "nri_usage","mci_afford","mci_consumer",
              "fixed_bb","hh_mobile","hh_computer","hh_internet","ind_computer",
              "ind_mobile","internet_gender_gap","ind_internet","mobile_cell","fixed_tel"),
-    label=c('Mobile subscriptions (WEF)','Internet users (WEF)','Fixed internet subscriptions (WEF)',
-            'Mobile broadband subscriptions (WEF)','ICT Use (J2SR/WEF)','Affordability (GSMA)',
-            'Consumer readiness (GSMA)','Fixed broadband subscriptions (ITU)',
-            'HH mobile ownership (ITU)','HH computer ownership (ITU)','HH internet use (ITU)',
-            'Individual computer use (ITU)','Individual mobile use (ITU)',
-            'Gender gap in internet use (ITU)','Individual internet use (ITU)',
-            'Mobile subscriptions (ITU)','Fixed telephone subscriptions (ITU)')
+    label=c('Mobile subscriptions','Internet users','Fixed internet subscriptions',
+            'Mobile broadband subscriptions','ICT Use','Affordability',
+            'Consumer readiness','Fixed broadband subscriptions',
+            'HH mobile ownership','HH computer ownership','HH internet use',
+            'Individual computer use','Individual mobile use',
+            'Gender gap in internet use','Individual internet use',
+            'Mobile subscriptions','Fixed telephone subscriptions'),
+  category='Access and Use',
+  source=c('WEF NRI','WEF NRI','WEF NRI','WEF NRI','WEF NRI','GSMA MCI','GSMA MCI','ITU','ITU','ITU','ITU',
+           'ITU','ITU','ITU','ITU','ITU','ITU')
 ) %>%
   mutate(flip=(variable %in% c('Cost_1_GB_Share_GNICM','internet_gender_gap')))
 
@@ -32,6 +35,8 @@ rename_sdg4 <- tibble(
   label=c('Copy/paste','Create presentation','Install software','Move files to a device',
           'Copy/move file or folder','Install a new device','Sent email with attachment',
           'Use spreadsheet','Write program'),
+  category='Digital literacy',
+  source='UNESCO',
   flip=FALSE
 ) 
 
@@ -43,6 +48,8 @@ rename_sdg4_gaps <- tibble(
           'Install software','Move files to device','Copy/move file or folder',
           'Install new device','Sent email with attachment','Use spreadsheet',
           'Write program'),
+  category='Digital literacy gender gaps',
+  source='UNESCO',
   flip=FALSE
 ) 
 
@@ -54,12 +61,15 @@ rename_afford <- tibble(
              'mobile_tariffs','handset_prices','taxation','inequality',
              'smartphone_cost','prepaid_cost','postpaid_cost','fixed_bb_cost','arpu',
              'wireless_market_share','bb_market_share'),
-  label=c('Cost of 1GB data (A4AI)','Access index (A4AI)','Overall index (A4AI)',
-          'Mobile tariffs (GSMA)','Handset prices (GSMA)','Taxation (GSMA)',
-          'Inequality (GSMA)',
-          'Smartphone cost (3i)','Prepaid mobile cost (3i)','Postpaid mobile cost (3i)',
-          'Fixed broadband cost (3i)','Avg. revenue per user (3i)','Wireless market share (3i)',
-          'Broadband market share (3i)')
+  label=c('Cost of 1GB data','Access index','Overall index',
+          'Mobile tariffs','Handset prices','Taxation',
+          'Inequality',
+          'Smartphone cost','Prepaid mobile cost','Postpaid mobile cost',
+          'Fixed broadband cost','Avg. revenue per user','Wireless market share',
+          'Broadband market share'),
+  category='Affordability',
+  source=c('A4AI','A4AI','A4AI','GSMA MCI','GSMA MCI','GSMA MCI','GSMA MCI',
+           'EIU 3i','EIU 3i','EIU 3i','EIU 3i','EIU 3i','EIU 3i','EIU 3i')
 ) %>%
   mutate(flip=(variable %in% c('Cost_1_GB_Share_GNICM','wireless_market_share','bb_market_share',
                                'prepaid_cost','postpaid_cost','fixed_bb_cost')))
@@ -75,7 +85,9 @@ rename_censor <- tibble(
   label=c("Gov filtering in practice","Gov shutdown in practice","Social media shutdowns",
           "Social media alternatives","Social media censorship","Internet legal regulation content",
           "Abuse of defamation/copyright law by elites","Arrests for political content","Civil liberties",
-          "Political civil liberties","Private civil liberties","Press freedom (RSF)")
+          "Political civil liberties","Private civil liberties","Press freedom"),
+  category='Censorship and civil liberties',
+  source=c(rep('V-Dem',11),'RSF')
 ) %>%
   mutate(flip=(variable=='press_freedom'))
 
@@ -84,6 +96,8 @@ rename_fotn <- tibble(
              'user_violations','fotn_total'),
   label=c('Obstacles to access (FH)','Limits on content (FH)',
           'Violations of user rights (FH)','Freedom on the net (FH)'),
+  category='Freedom on the Net',
+  source='Freedom House',
   flip=TRUE
 )
 
@@ -92,7 +106,9 @@ rename_privacy <- tibble(
                'v2smlawpr'),
   label=c('Privacy protection by law content','Social media monitoring','Privacy protection by law exists',
           'Gov capacity to regulate online content','Content regulation done by state (not private)',
-          'Defamation protection')
+          'Defamation protection'),
+  category='Privacy and surveillance',
+  source='V-Dem'
 ) %>%
   mutate(flip=grepl('\\(.*\\)',label))
 
@@ -101,6 +117,8 @@ rename_info <- tibble(
   label=c("Government dissemination of false information domestic","Government dissemination of false information abroad",
           "Party dissemination of false information domestic","Party dissemination of false information abroad", 
           "Foreign governments dissemination of false information","Foreign governments ads"),
+  category='Information integrity',
+  source='V-Dem',
   flip=FALSE
 )
 
@@ -109,10 +127,12 @@ rename_info <- tibble(
 ###############################################################################
 rename_cyber <- tibble(
   label=c('Gov cyber capacity','Political parties cyber capacity',
-          'Global Cybersecurity Index (ITU)','National Cyber Security Index (Estonia)',
+          'Global Cybersecurity Index','National Cyber Security Index',
           'Gov filtering capacity','Gov shutdown capacity'),
   variable=c('v2smgovcapsec','v2smpolcap','itu_gci','ncsi','v2smgovfilcap',
              'v2smgovshutcap'),
+  category='Cybersecurity',
+  source=c('V-Dem','V-Dem','ITU','Estonia','V-Dem','V-Dem'),
   flip=FALSE
 )
 
@@ -125,8 +145,8 @@ rename_society <- tibble(
              'v2smcamp','v2smpolsoc','v2smpolhate','open_data',
              'open_gov','public_laws','right_to_info','civic_part','complaint'),
   label=c('Civil liberties','Political civil liberties',
-          'Private civil liberties','Content & Services (GSMA)',
-          'Laws relating to ICTs (WEF)','Environment subindex (WEF)',
+          'Private civil liberties','Content & Services',
+          'Laws relating to ICTs','Environment subindex',
           "Online media existence",
           "Online media perspectives",
           "Online media fractionalization",
@@ -135,9 +155,13 @@ rename_society <- tibble(
           "Elites’ use of social media to organize offline action",
           "Party/candidate use of social media in campaigns",
           "Polarization of society",
-          "Political parties hate speech",'Open Data Index (OKF)',
-          'Open government (WJP/J2SR)','Publicized laws and gov data (WJP)',
-          'Right to information (WJP)','Civic participation (WJP)','Complaint mechanisms (WJP)'),
+          "Political parties hate speech",'Open Data Index',
+          'Open government','Publicized laws and gov data',
+          'Right to information','Civic participation','Complaint mechanisms'),
+  category='Digital society',
+  source=c('V-Dem','V-Dem','V-Dem','GSMA MCI','WEF','WEF NRI','V-Dem','V-Dem',
+           'V-Dem','V-Dem','V-Dem','V-Dem','V-Dem','V-Dem','V-Dem','OKF','WJP',
+           'WJP','WJP','WJP','WJP'),
   flip=FALSE
 )
 
@@ -150,6 +174,8 @@ rename_eiu <- tibble(
              "consumer_protection","infrastructure_eiu","overall_eiu"),
   label=c('Government and policy support','Stability and integrity','Products and outlets',
           'Consumer protection','Infrastructure','EIU overall'),
+  category='Digital finance',
+  source='EIU Global Microscope',
   flip=FALSE
 )
 
@@ -159,6 +185,8 @@ rename_mmri <- tibble(
              "mmri_agent","mmri_infra"),
   label=c('MMRI','Authorization','Consumer Protection','Transaction Limits',
           'KYC','Agent network','Infrastructure and investment environment'),
+  category='Digital finance',
+  source='GSMA MMRI',
   flip=FALSE
 )
 
@@ -168,12 +196,15 @@ rename_barrier <- tibble(
              "barrier_relig","barrier_tooexpens","barrier_toofar","barrier_trust"),
   label=c('Family','No documents','No funds','No need','Religion','Too expensive',
           'Too far away','Lack of trust'),
-  flip=FALSE
-)
+  category='Digital finance barriers',
+  source='WB Findex',
+  flip=FALSE)
 
 rename_findex <- tibble(
   variable=c("acct","borrow","dig_pay","mm"),
   label=c('Account ownership','Borrowed','Used digital payments','Mobile money'),
+  category='Digital finance',
+  source='WB Findex',
   flip=FALSE
 )
 
@@ -191,6 +222,8 @@ rename_findex_gaps <- tibble(
           'Borrowing (EDUCATION)','Digital payments (EDUCATION)','Mobile money (EDUCATION)',
           'Account (URBAN/RURAL)','Borrowing (URBAN/RURAL)',
           'Digital payments (URBAN/RURAL)','Mobile money (URBAN/RURAL)'),
+  category='Digital finance gaps',
+  source='WB Findex',
   flip=FALSE
 )
 
@@ -209,6 +242,8 @@ rename_infra <- tibble(
           'Enabling infrastructure (MCI dimension)','Electricity access','Interational internet bandwidth',
           'Secure internet servers','Top-level domains per capita','IXPs per capita','Spectrum (MCI dimension)',
           'Digital dividend spectrum','Spectrum below 1 GHz','Spectrum 1-3 GHz'),
+  category='Infrastructure',
+  source='GSMA MCI',
   flip=FALSE
 )
 
@@ -218,10 +253,13 @@ rename_infra <- tibble(
 rename_trade <- tibble(
   variable=c('db_score','db_trade','db_startbiz','iipd',
              'dtri','fiscal_market','establishment','data_restrictions','trading_restrictions'),
-  label=c('Doing business score (WB)','Trade across borders (WB)',
-          'Starting a business (WB)','Postal development index',
-          'Digital Trade Restrictiveness (DTRI)','Fiscal restrictions & market access (DTRI)',
-          'Establishment restrictions (DTRI)','Restrictions on data (DTRI)','Trading restrictions (DTRI)')
+  label=c('Doing business score','Trade across borders',
+          'Starting a business','Postal development index',
+          'Digital Trade Restrictiveness','Fiscal restrictions & market access',
+          'Establishment restrictions','Restrictions on data','Trading restrictions'),
+  category='Digital trade and e-commerce',
+  source=c('WB Doing Business','WB Doing Business','WB Doing Business',
+           'Universal Postal Union','DTRI','DTRI','DTRI','DTRI','DTRI')
 ) %>%
   mutate(flip=grepl('DTRI',label))
 
@@ -239,6 +277,8 @@ rename_wef_private <- tibble(
   label = c("Firm-level tech absorption","Innovation capacity",
             "PCT patent applications","ICT use for B2B",
             "B2C Internet use","Extent of staff training",'Latest tech available'),
+  category='Private sector adoption',
+  source='WEF NRI',
   flip=FALSE
 )
 
@@ -248,6 +288,8 @@ rename_wef_public <- tibble(
   label = c("Importance of ICTs to gov’t vision", "Government Online Service Index",
             "Gov’t success in ICT promotion","ICT improves gov't services",
             "Value of gov't websites","Gov’t procurement of advanced tech",'Latest tech available'),
+  category='Public sector adoption',
+  source='WEF NRI',
   flip=FALSE
 )
 
@@ -258,6 +300,16 @@ rename_wef_literacy <- tibble(
   label = c('Tertiary enrollment (gross)','Mgmt. school quality','Ed system quality',
             'Math & science ed quality','Secondary enrollment (gross)','Adult literacy',
             'Knowledge-intensive jobs','Internet in schools'),
+  category='Digital literacy',
+  source='WEF NRI',
+  flip=FALSE
+)
+
+rename_womanstats <- tibble(
+  variable='ws_PC1',
+  label='Aggregate gender score',
+  category='Gender',
+  source='WomanStats',
   flip=FALSE
 )
 
@@ -270,8 +322,11 @@ rename_all <- rbind(rename_access,rename_afford,rename_barrier,rename_censor,
                     rename_cyber,rename_eiu,rename_findex,rename_findex_gaps,
                     rename_infra,rename_mmri,rename_sdg4,
                     rename_sdg4_gaps,rename_society,rename_trade,
-                    rename_wef_literacy,rename_wef_private,rename_wef_public) %>%
+                    rename_wef_literacy,rename_wef_private,rename_wef_public,
+                    rename_womanstats) %>%
   distinct
+
+write_csv(rename_all,'app_variables.csv')
 
 # sanity checks
 #rename_all$variable %>% table() %>% sort
@@ -305,15 +360,25 @@ available_countries <- function(pname) {
   tmp$country[present>0] %>% sort
 }
 
+get_sources <- function(pname) {
+  v <- filter(plot_vars,plot_name==pname)$varlist %>% unlist
+  tmp <- rename_all %>% filter(variable %in% v)
+  unique(tmp$source)
+}
+
 # test run
 # sapply(plot_vars$plot_name,function(x) length(available_countries(x)))
   
 # unified plotting function
 
 deca_plot <- function(pname,country_name,show_pred=FALSE,shade_fraction=0.5,
-                       sort_order='none',num_pcs=5,overall_score='PC1') {
+                       sort_order='none',num_pcs=5,overall_score='PC1',show_sources=FALSE) {
   v <- filter(plot_vars,plot_name==pname)$varlist %>% unlist
   rename <- rename_all %>% filter(variable %in% v)
+  if (show_sources) {
+    rename <- rename %>%
+      mutate(label = paste0(label,' (',source,')'))
+  }
   plot_frame %>%
     select(country,v) %>%
     j2sr_style_plot(rename,country_name,show_pred,
@@ -336,4 +401,36 @@ num_rows <- function(pname,country_name) {
     is.na %>%
     rowSums
   length(v) - na_count
+}
+
+########### DECA scatter plots
+scatter_list <- c('Internet users / Mobile tariffs',
+                  'Gender score / Digital payments gender gap',
+                  'Government filtering / Government cyber capacity',
+                  'Postal development / Internet users')
+
+deca_scatter <- function(plot_type,highlight_list) {
+  if (!plot_type %in% scatter_list) {
+    message(paste0('ERROR: ',plot_type,' is not a valid plot type!'))
+    return()
+  }
+  if (plot_type == scatter_list[1]) {
+    xlabel <- 'Percent of internet users (ITU)'
+    ylabel <- 'Affordability of mobile tariffs (GSMA)'
+    plotme <- select(plot_frame,country,ind_internet,mobile_tariffs)
+  } else if (plot_type == scatter_list[2]) {
+    xlabel <- 'Aggregate gender score (derived from WomanStats)'
+    ylabel <- 'Gender gap in digital payments'
+    plotme <- select(plot_frame,country,ws_PC1,dig_pay_gender_gap)
+  } else if (plot_type == scatter_list[3]) {
+    xlabel <- 'Government filtering in practice'
+    ylabel <- 'Government cyber capacity'
+    plotme <- select(plot_frame,country,v2smgovfilprc,v2smgovcapsec)
+  } else if (plot_type == scatter_list[4]) {
+    xlabel <- 'Integrated Index for Postal Development'
+    ylabel <- 'Percent of internet users (ITU)'
+    plotme <- select(plot_frame,country,iipd,ind_internet)
+  }
+  highlight_scatter(plotme,highlight_list) +
+    xlab(xlabel) + ylab(ylabel)
 }

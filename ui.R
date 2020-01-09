@@ -15,7 +15,17 @@
 
 # Add standard description of how normalization works
 
-# BUG: Should it be re-imputing everything each time I change the number of PCs? Probably not.
+# BUGS:
+# Should it be re-imputing everything each time I change the number of PCs? Probably not.
+# Infrastructure: no sources?
+#   Access and use: doesn't work unless "show sources" is checked -- maybe duplicate names?
+# Affordability: shows wrong sources (A4AI and 3i, should be A4AI and MCI?)
+# WEF private sector: doesn't work even if sources are shown (also public sector, digial society, censorship)
+# Freedom on the net: has both "FH" and "Freedom House" as sources
+# 
+# Number of PCs: better to select a number than type one in
+# 
+# Access & Use / Afghanistan -- summary score changes based on whether I've got the predictions turned on; this shouldn't be happening. Looks like the score without predictions is the right one.
 
 library(shiny)
 

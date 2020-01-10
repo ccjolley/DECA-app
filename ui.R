@@ -16,8 +16,7 @@
 # Add standard description of how normalization works
 
 # BUGS:
-# Predictions seem not to work for some countries: US, Brunei, Vanuatu...
-
+# There are some non-countries in my all_countries list
 
 library(shiny)
 

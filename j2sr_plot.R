@@ -134,7 +134,7 @@ j2sr_style_plot <- function(data,rename_tbl,country_name,show_pred=FALSE,
 
   if (show_pred) {
     tmp2 <- tmp %>% 
-      left_join(read_csv('pc.csv'),by='country')
+      left_join(all_pcs,by='country')
     all_pred <- tmp %>%
       mutate_at(rename_tbl$variable,function(x) {
         f <- formula(paste0('x ~ ',paste0('tmp2$PC',1:num_pcs,collapse=' + ')))

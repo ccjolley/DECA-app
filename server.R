@@ -27,7 +27,7 @@ shinyServer(function(input, output, session) {
         uiOutput('country_choice'),
         checkboxInput('score','Show summary score?',TRUE),
         sliderInput('shade','Fraction to shade:',0,1,0.5),
-        checkboxInput('pred','Show predictions?',FALSE),
+        uiOutput('pred_choice'),
         uiOutput('pc_choice'),
         hr(),
         checkboxInput('help_me','Show help text?',FALSE),
@@ -46,6 +46,12 @@ shinyServer(function(input, output, session) {
   output$country_choice <- renderUI({
     country_choices <- available_countries(input$plot_type)
     selectizeInput('country','Select a country:',choices=country_choices)
+  })
+  
+  output$pred_choice <- renderUI({
+    if (input$country %in% all_pcs$country) {
+      res[1] <- checkboxInput('pred','Show predictions?',FALSE)
+    }
   })
   
   output$pc_choice <- renderUI({
@@ -140,7 +146,6 @@ shinyServer(function(input, output, session) {
                                 '<a href="http://www.womanstats.org/">WomanStats</a><br>'))
     
     source_str <- filter(source_tbl,short %in% sources)$full %>% paste(collapse='')
-    message(paste0('source_str = ',source_str))
     paste0('<b>Sources:</b><br><br>',source_str)
   })
   

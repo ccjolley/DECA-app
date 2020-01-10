@@ -11,4 +11,6 @@ options(shiny.usecairo=FALSE)
 
 source('plots.R')
 
+all_pcs <- read_csv('pc.csv')
+
 plot_list <- plot_vars$plot_name

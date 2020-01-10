@@ -133,11 +133,11 @@ j2sr_style_plot <- function(data,rename_tbl,country_name,show_pred=FALSE,
     filter(!is.na(highlight_val)) 
 
   if (show_pred) {
-    tmp <- tmp %>% 
+    tmp2 <- tmp %>% 
       left_join(read_csv('pc.csv'),by='country')
     all_pred <- tmp %>%
       mutate_at(rename_tbl$variable,function(x) {
-        f <- formula(paste0('x ~ ',paste0('tmp$PC',1:num_pcs,collapse=' + ')))
+        f <- formula(paste0('x ~ ',paste0('tmp2$PC',1:num_pcs,collapse=' + ')))
         predict(lm(f,data=tmp,na.action=na.exclude))
         })
     

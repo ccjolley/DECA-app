@@ -50,7 +50,7 @@ shinyServer(function(input, output, session) {
   
   output$pc_choice <- renderUI({
     if (input$pred) {
-      numericInput('pcs','Number of principal components:',5,min=1,max=30)
+      sliderInput('pcs','Number of principal components:',1,10,5,round=TRUE)
     }
   })
   

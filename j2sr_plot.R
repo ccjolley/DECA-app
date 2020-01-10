@@ -41,8 +41,10 @@ corr_sort <- function(d) {
   result
 }
 
+###############################################################################
 # rescale variable so that average value of lowest quintile is 1 and 
 # highest quintile is 5
+###############################################################################
 make_norm <- function(x) { 
   #(x - mean(x, na.rm=TRUE)) / sd(x, na.rm=TRUE)
   q1 <- mean(x[x <= quantile(x,probs=0.2,na.rm=TRUE)],na.rm=TRUE)
@@ -78,6 +80,23 @@ pc1_summary <- function(d,country_name,verbose=TRUE) {
 }
 
 ###############################################################################
+# If some labels are duplicated (because multiple sources report the 
+# same indicator), add the source name to the duplicates.
+###############################################################################
+fix_dup_labels <- function(rename) {
+  label_counts <- table(rename$label)
+  if (max(label_counts) == 1) {
+    rename
+  } else {
+    dups <- names(label_counts)[label_counts > 1]
+    rename %>%
+      mutate(label = ifelse(label %in% dups,
+                            paste0(label,' (',source,')'),
+                            label))
+  }
+}
+
+###############################################################################
 # Create a "J2SR-style" plot that highlights the position of one country across
 # a set of indicators, relative to all others in the dataset.
 #   data - Tibble containing indices to display (along with PCs that could be 
@@ -93,6 +112,7 @@ pc1_summary <- function(d,country_name,verbose=TRUE) {
 j2sr_style_plot <- function(data,rename_tbl,country_name,show_pred=FALSE,
                             shade_fraction=NA,sort_order='value',num_pcs=2,
                             overall_score='PC1') {
+  rename_tbl <- fix_dup_labels(rename_tbl)
   flip_vars <- filter(rename_tbl,flip)$variable
   flip <- function(x,flip_at=3) {
     (flip_at - x) + flip_at

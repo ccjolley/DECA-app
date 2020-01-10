@@ -372,7 +372,10 @@ get_sources <- function(pname) {
 # unified plotting function
 
 deca_plot <- function(pname,country_name,show_pred=FALSE,shade_fraction=0.5,
-                       sort_order='none',num_pcs=5,overall_score='PC1',show_sources=FALSE) {
+                       sort_order='cor',num_pcs=5,overall_score='PC1',show_sources=FALSE) {
+  if (!pname %in% plot_vars$plot_name) {
+    message(paste0('ERROR: ',pname,' is not a valid plot name.'))
+  }
   v <- filter(plot_vars,plot_name==pname)$varlist %>% unlist
   rename <- rename_all %>% filter(variable %in% v)
   if (show_sources) {

@@ -409,6 +409,23 @@ num_rows <- function(pname,country_name) {
   length(v) - na_count
 }
 
+
+######## Cache value of PC1 summary score so that I don't have to repeat MICE
+# Some of this repeats work that gets done in deca_plot() and j2sr_plot() and could be streamlined (maybe)
+cache_pc1 <- function(pname,country) {
+  v <- filter(plot_vars,plot_name==pname)$varlist %>% unlist
+  rename_tbl <- rename_all %>% filter(variable %in% v)
+  flip_vars <- filter(rename_tbl,flip)$variable
+  flip <- function(x,flip_at=3) {
+    (flip_at - x) + flip_at
+  }
+  tmp <- plot_frame  %>%
+    select(country,one_of(v)) %>%
+    mutate_at(v,make_norm) %>%
+    mutate_at(flip_vars, flip) 
+  pc1_summary(tmp,country)
+}
+
 ########### DECA scatter plots
 scatter_list <- c('Internet users / Mobile tariffs',
                   'Gender score / Digital payments gender gap',

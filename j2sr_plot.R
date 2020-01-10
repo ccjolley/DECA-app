@@ -214,7 +214,7 @@ j2sr_style_plot <- function(data,rename_tbl,country_name,show_pred=FALSE,
       geom_point(data=filter(plotme,highlight,!sig),size=3,color='#CFCDC9') 
   }
   ### Add overall score if desired
-  if (!overall_score %in% c('none','mean','PC1')) {
+  if (!(overall_score %in% c('none','mean','PC1') | typeof(overall_score)=='double')) {
     message(paste0('Invalid value for overall_score: ',overall_score))
     overall_score <- 'none'
   }
@@ -223,6 +223,8 @@ j2sr_style_plot <- function(data,rename_tbl,country_name,show_pred=FALSE,
       overall <- filter(plotme,highlight)$value %>% mean
     } else if (overall_score == 'PC1') {
       overall <- pc1_summary(tmp,country_name)
+    } else if (typeof(overall_score) == 'double') {
+      overall <- overall_score
     }
     p <- p +
       geom_vline(xintercept=overall,color='#BA0C2F') +

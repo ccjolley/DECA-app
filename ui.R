@@ -16,9 +16,8 @@
 # Add standard description of how normalization works
 
 # BUGS:
-# Should it be re-imputing everything each time I change the number of PCs? Probably not.
-# 
-# Number of PCs: better to select a number than type one in
+# Predictions seem not to work for some countries: US, Brunei, Vanuatu...
+
 
 library(shiny)
 

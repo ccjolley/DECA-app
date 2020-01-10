@@ -54,11 +54,17 @@ shinyServer(function(input, output, session) {
     }
   })
   
+  cached_score <- reactive({
+    cache_pc1(input$plot_type,input$country)
+  })
+  
   output$dotPlot <- renderPlot({
+    # TODO: now that I can pass a double into the overall_score argument of j2sr_plot, I can 
+    # cache the value of that calculation and only update it when input$plot_type or input$country changes
     deca_plot(input$plot_type,
               input$country,
               shade_fraction=input$shade,
-              overall_score=ifelse(input$score,'PC1','none'),
+              overall_score=ifelse(input$score,cached_score(),'none'),
               show_pred=input$pred,
               num_pcs=input$pcs,
               show_sources=input$show_sources) +

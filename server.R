@@ -107,7 +107,7 @@ shinyServer(function(input, output, session) {
   })
   output$plot_sources <- renderText({
     # TODO: somehow these still aren't quite right; don't work properly for some plots
-    sources <- get_sources(input$plot_type)
+    sources <- get_sources(input$plot_type,input$country)
     source_tbl <- tibble(short=c("A4AI","DTRI","EIU 3i","EIU Global Microscope","Estonia", 
                                  "Freedom House","GSMA MCI","GSMA MMRI","ITU","OKF", 
                                  "RSF","UNESCO","Universal Postal Union","V-Dem","WB Doing Business", 
@@ -118,7 +118,7 @@ shinyServer(function(input, output, session) {
                                 '<a href="https://www.eiu.com/public/topical_report.aspx?campaignid=microscope2019">EIU Global Microscope</a><br>',
                                 '<a href="https://ncsi.ega.ee/">National Cyber Security Index</a><br>', 
                                 '<a href="https://freedomhouse.org/report/freedom-net/freedom-net-2018/rise-digital-authoritarianism">Freedom House</a><br>',
-                                '<a href="http://www.mobileconnectivityindex.com/>GSMA Mobile Connectivity Index</a><br>',
+                                '<a href="http://www.mobileconnectivityindex.com/">GSMA Mobile Connectivity Index</a><br>',
                                 '<a href="https://www.gsma.com/mobilemoneymetrics/#regulatory-index">GSMA Mobile Money Regulatory Index</a><br>',
                                 '<a href="https://www.itu.int/en/ITU-D/Statistics/Pages/stat/default.aspx">International Telecommunications Union</a><br>',
                                 '<a href="https://index.okfn.org/place/">Open Knowledge Foundation</a><br>', 
@@ -134,6 +134,7 @@ shinyServer(function(input, output, session) {
                                 '<a href="http://www.womanstats.org/">WomanStats</a><br>'))
     
     source_str <- filter(source_tbl,short %in% sources)$full %>% paste(collapse='')
+    message(paste0('source_str = ',source_str))
     paste0('<b>Sources:</b><br><br>',source_str)
   })
   

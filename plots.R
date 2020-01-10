@@ -360,9 +360,13 @@ available_countries <- function(pname) {
   tmp$country[present>0] %>% sort
 }
 
-get_sources <- function(pname) {
-  v <- filter(plot_vars,plot_name==pname)$varlist %>% unlist
-  tmp <- rename_all %>% filter(variable %in% v)
+get_sources <- function(pname,cname) {
+  v1 <- filter(plot_vars,plot_name==pname)$varlist %>% unlist
+  v2 <- plot_frame %>%
+    filter(country==cname) %>%
+    select_if(~ !any(is.na(.))) %>%
+    names
+  tmp <- rename_all %>% filter(variable %in% v1,variable %in% v2)
   unique(tmp$source)
 }
 

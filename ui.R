@@ -17,8 +17,6 @@
 
 # BUGS:
 # Should it be re-imputing everything each time I change the number of PCs? Probably not.
-# Infrastructure: no sources?
-# Affordability: shows wrong sources (A4AI and 3i, should be A4AI and MCI?)
 # WEF private sector: doesn't work even if sources are shown (also public sector, digial society, censorship)
 # Freedom on the net: has both "FH" and "Freedom House" as sources
 # 

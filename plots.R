@@ -94,8 +94,8 @@ rename_censor <- tibble(
 rename_fotn <- tibble(
   variable=c('access_obstacles','content_limits',
              'user_violations','fotn_total'),
-  label=c('Obstacles to access (FH)','Limits on content (FH)',
-          'Violations of user rights (FH)','Freedom on the net (FH)'),
+  label=c('Obstacles to access','Limits on content',
+          'Violations of user rights','Freedom on the net'),
   category='Freedom on the Net',
   source='Freedom House',
   flip=TRUE
@@ -283,11 +283,10 @@ rename_wef_private <- tibble(
 )
 
 rename_wef_public <- tibble(
-  variable = c('ict_vision','online_services','ict_promotion','ict_gov_efficiency','e_participaton','gov_procure',
-               'tech_avail'),
+  variable = c('ict_vision','online_services','ict_promotion','ict_gov_efficiency','e_participaton','gov_procure'),
   label = c("Importance of ICTs to gov’t vision", "Government Online Service Index",
             "Gov’t success in ICT promotion","ICT improves gov't services",
-            "Value of gov't websites","Gov’t procurement of advanced tech",'Latest tech available'),
+            "Value of gov't websites","Gov’t procurement of advanced tech"),
   category='Public sector adoption',
   source='WEF NRI',
   flip=FALSE

@@ -17,8 +17,6 @@
 
 # BUGS:
 # Should it be re-imputing everything each time I change the number of PCs? Probably not.
-# WEF private sector: doesn't work even if sources are shown (also public sector, digial society, censorship)
-# Freedom on the net: has both "FH" and "Freedom House" as sources
 # 
 # Number of PCs: better to select a number than type one in
 # Ordering of rows -- create exceptions in cases where correlation sorting doesn't make sense

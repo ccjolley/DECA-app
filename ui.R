@@ -19,7 +19,6 @@
 # Should it be re-imputing everything each time I change the number of PCs? Probably not.
 # 
 # Number of PCs: better to select a number than type one in
-# Ordering of rows -- create exceptions in cases where correlation sorting doesn't make sense
 # 
 # Access & Use / Afghanistan -- summary score changes based on whether I've got the predictions turned on; this shouldn't be happening. Looks like the score without predictions is the right one.
 

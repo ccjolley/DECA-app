@@ -380,7 +380,11 @@ deca_plot <- function(pname,country_name,show_pred=FALSE,shade_fraction=0.5,
     message(paste0('ERROR: ',pname,' is not a valid plot name.'))
   }
   v <- filter(plot_vars,plot_name==pname)$varlist %>% unlist
-  rename <- rename_all %>% filter(variable %in% v)
+  rename <- rename_all %>% 
+    filter(variable %in% v) %>% 
+    group_by(variable) %>%  # this and following rows make sure variables aren't duplicated
+    filter(row_number()==1) %>% 
+    ungroup 
   if (show_sources) {
     rename <- rename %>%
       mutate(label = paste0(label,' (',source,')'))

@@ -356,7 +356,8 @@ available_countries <- function(pname) {
   v <- filter(plot_vars,plot_name==pname)$varlist %>% unlist
   tmp <- plot_frame %>% select(country,v)
   present <- rowSums(!is.na(select(tmp,-country)))
-  tmp$country[present>0] %>% sort
+  # intersect with all_countries to avoid some former countries that are still included in V-Dem
+  intersect(tmp$country[present>0],all_countries) %>% sort
 }
 
 get_sources <- function(pname,cname) {

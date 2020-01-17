@@ -1,22 +1,21 @@
 # Development TODOs for DECA shiny app
 
-# hyperlinked list of data sources shown in a given plot (probably below plot?)
-
 # radio buttons with options to filter comparison countries (by geography and income)
 
 # re-calculate PCs; add to available plots
-
-# Design workflow that allows people to quickly generate all plots for desk review
-# Key thing here is giving country selection priority over plot type selection;
-# people are more likely to want to see a bunch of plots for the same country
-# than vice versa
 
 # Design a new visualization for gender gaps -- maybe a barbell plot?
 
 # Add standard description of how normalization works
 
-# BUGS:
-# There are some non-countries in my all_countries list
+# Any GSMA Intelligence data series I should add?
+# - Market penetration, unique mobile subscribers
+# - Annual growth rate of unique mobile subscribers
+# - Unique mobile internet subscribers
+# - Percentage mobile internet subscribers (what's the difference between this and market penetration?)
+# - % connections of various kinds (2G-5G, smartphone, etc.)
+# - effective price stats
+# - network coverage stats
 
 library(shiny)
 

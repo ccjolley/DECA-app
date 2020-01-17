@@ -50,7 +50,7 @@ shinyServer(function(input, output, session) {
   
   output$pred_choice <- renderUI({
     if (input$country %in% all_pcs$country) {
-      res[1] <- checkboxInput('pred','Show predictions?',FALSE)
+      checkboxInput('pred','Show predictions?',FALSE)
     }
   })
   

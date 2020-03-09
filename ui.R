@@ -9,10 +9,9 @@
 # Add standard description of how normalization works
 
 # Any GSMA Intelligence data series I should add?
-# - Market penetration, unique mobile subscribers
+# - Market penetration, unique mobile (internet) subscribers
 # - Annual growth rate of unique mobile subscribers
 # - Unique mobile internet subscribers
-# - Percentage mobile internet subscribers (what's the difference between this and market penetration?)
 # - % connections of various kinds (2G-5G, smartphone, etc.)
 # - effective price stats
 # - network coverage stats

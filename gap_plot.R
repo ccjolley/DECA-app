@@ -11,13 +11,24 @@ wb_findex <- read_csv('findex.csv') %>%
 # Instead of showing a singe "gap score", show the absolute numbers in a barbell plot
 
 # TODO: need a way to filter the available country list based on the variables selected
-# (put variable selection above country selection panel on app)
+#       UNLESS this means that changing the plot variable resets the country list; then
+#       this probably isn't worth it -- just filter by countries in WB findex
+
+gap_list <- c('Male/Female','Rich/Poor','Educated/Uneducated','Old/Young','Employed/Unemployed','Overall/Rural')
+gap_vars <- c('Account ownership','Borrowing','Digital payments','Mobile money')
+
+available_countries_gap <- function(meas) {
+  measurements <- tibble(meas_label=gap_vars,
+                         prefix=c('acct','borrow','dig_pay','mm'))
+  filter(measurements,meas_label==meas)$prefix
+  # TODO: return countries for which this column isn't NA.
+}
 
 gap_plot <- function(gap,meas,country_list) {
-  gap_types <- tibble(gap_label=c('Male/Female','Rich/Poor','Educated/Uneducated','Old/Young','Employed/Unemployed','Overall/Rural'),
+  gap_types <- tibble(gap_label=gap_list,
                       suffix1=c('_m','_rich','_ed','_old','_labor',''),
                       suffix2=c('_f','_poor','_uned','_young','_nolabor','_rural'))
-  measurements <- tibble(meas_label=c('Account ownership','Borrowing','Digital payments','Mobile money'),
+  measurements <- tibble(meas_label=gap_vars,
                          prefix=c('acct','borrow','dig_pay','mm'))
   
   var1 <- paste0(filter(measurements,meas_label==meas)$prefix,
@@ -49,7 +60,12 @@ gap_plot <- function(gap,meas,country_list) {
     theme(axis.title.y=element_blank(),
           legend.title=element_blank()) +
     xlab(paste0(meas,' (WB Findex)')) 
+
+  # TODO: Add a caption with an explanatory note for variables that need it (defn of old, young, rich, poor, etc.)
+  
 }
 
-gap_plot('Rich/Poor','Borrowing',
-         c('Kenya','Tanzania','Uganda','Ethiopia','Rwanda','Mali'))
+
+
+# gap_plot('Rich/Poor','Borrowing',
+#          c('Kenya','Tanzania','Uganda','Ethiopia','Rwanda','Mali'))

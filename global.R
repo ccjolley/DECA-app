@@ -10,6 +10,7 @@ CairoFonts(
 options(shiny.usecairo=FALSE)
 
 source('plots.R')
+source('gap_plot.R')
 
 all_pcs <- read_csv('pc.csv')
 

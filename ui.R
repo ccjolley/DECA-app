@@ -28,7 +28,7 @@ shinyUI(fluidPage(
   
   sidebarLayout(
     sidebarPanel(
-      radioButtons('plot_category','Plot category:',choices=c('Summary plot','Scatter plot')),
+      radioButtons('plot_category','Plot category:',choices=c('Summary plot','Scatter plot','Gap plot')),
       uiOutput('plot_options')
     ),
     

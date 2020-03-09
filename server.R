@@ -40,6 +40,13 @@ shinyServer(function(input, output, session) {
         selectizeInput('country_list','Highlight countries:',choices=all_countries,
                        multiple=TRUE)
       )
+    } else if (input$plot_category == 'Gap plot') {
+      list(
+        selectizeInput('gap_var','Select a variable:',choices=gap_vars),
+        selectizeInput('gap_type','Select a gap type:',choices=gap_list),
+        selectizeInput('country_list','Highlight countries:',choices=all_countries,
+                       multiple=TRUE)
+      )
     }
   })
   
@@ -83,12 +90,18 @@ shinyServer(function(input, output, session) {
       theme(title=element_text(size=15))
   })
   
+  output$gapPlot <- renderPlot({
+    gap_plot(input$gap_type,input$gap_var,input$country_list)
+  })
+  
   output$main_plot <- renderUI({
     if (input$plot_category == 'Summary plot') {
       heightstr <- paste0(25*num_rows(input$plot_type,input$country) + 50,'px')
       plotOutput('dotPlot',width='auto',height=heightstr)      
     } else if (input$plot_category == 'Scatter plot') {
       plotOutput('scatterPlot')
+    } else if (input$plot_category == 'Gap plot') {
+      plotOutput('gapPlot')
     }
   })
   

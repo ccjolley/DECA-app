@@ -48,6 +48,9 @@ available_gaps <- function(meas) {
 }
 
 gap_plot <- function(gap,meas,country_list) {
+  if (meas == 'Internet use' && gap != 'Male/Female') {
+    stop('Only the Male/Female gap is available for the ITU Internet use variable. Please choose another plot.')
+  }
   gv <- get_gap_vars(gap,meas)
   var1 <- gv[1]
   var2 <- gv[2]
@@ -86,8 +89,7 @@ gap_plot <- function(gap,meas,country_list) {
 }
 
 # TODO: don't add countries to plot if there's no data for them
-# TODO: fail gracefully if I select a gap that isn't available for a certain variable
 
 
-gap_plot('Male/Female','Internet use',
-        c('Algeria','Andorra','Angola','Argentina','Armenia'))
+gap_plot('Male/Female','Mobile money',
+        c('Cyprus','Finland','Brazil','Argentina'))

@@ -15,26 +15,42 @@ wb_findex <- read_csv('findex.csv') %>%
 #       this probably isn't worth it -- just filter by countries in WB findex
 
 gap_list <- c('Male/Female','Rich/Poor','Educated/Uneducated','Old/Young','Employed/Unemployed','Overall/Rural')
-gap_vars <- c('Account ownership','Borrowing','Digital payments','Mobile money')
+gap_vars <- c('Account ownership','Borrowing','Digital payments','Mobile money','Internet use')
 
-available_countries_gap <- function(meas) {
-  measurements <- tibble(meas_label=gap_vars,
-                         prefix=c('acct','borrow','dig_pay','mm'))
-  filter(measurements,meas_label==meas)$prefix
-  # TODO: return countries for which this column isn't NA.
-}
-
-gap_plot <- function(gap,meas,country_list) {
+get_gap_vars <- function(gap,meas) {
   gap_types <- tibble(gap_label=gap_list,
                       suffix1=c('_m','_rich','_ed','_old','_labor',''),
                       suffix2=c('_f','_poor','_uned','_young','_nolabor','_rural'))
   measurements <- tibble(meas_label=gap_vars,
-                         prefix=c('acct','borrow','dig_pay','mm'))
-  
+                         prefix=c('acct','borrow','dig_pay','mm','internet'))
   var1 <- paste0(filter(measurements,meas_label==meas)$prefix,
                  filter(gap_types,gap_label==gap)$suffix1)
   var2 <- paste0(filter(measurements,meas_label==meas)$prefix,
                  filter(gap_types,gap_label==gap)$suffix2)
+  c(var1,var2)
+}
+
+available_countries_gap <- function(gap,meas) {
+  gv <- get_gap_vars(gap,meas)
+  tmp <- wb_findex %>% 
+    select(country,gv[1],gv[2]) %>%
+    na.omit
+  sort(tmp$country)
+  # TODO: return countries for which this column isn't NA.
+}
+
+available_gaps <- function(meas) {
+  if (meas != 'Internet use') {
+    gap_list
+  } else {
+    'Male/Female'
+  }
+}
+
+gap_plot <- function(gap,meas,country_list) {
+  gv <- get_gap_vars(gap,meas)
+  var1 <- gv[1]
+  var2 <- gv[2]
   lab1 <- str_extract(gap,"^[A-Za-z]+")
   lab2 <- str_extract(gap,"[A-Za-z]+$")
   
@@ -50,7 +66,11 @@ gap_plot <- function(gap,meas,country_list) {
     melt %>%
     mutate(variable=ifelse(variable=='v1',lab1,lab2),
            variable=factor(variable,levels=c(lab1,lab2))) 
-  
+  if (meas=='Internet use') {
+    source <- 'ITU' }
+  else {
+    source <- 'WB Findex'
+  }
   ggplot(segs) +
     geom_segment(aes(x=v1,xend=v2,y=country,yend=country),color='#6C6463') +
     geom_point(data=dots,aes(x=value,y=country,color=variable),size=5) +
@@ -59,13 +79,15 @@ gap_plot <- function(gap,meas,country_list) {
     scale_x_continuous(labels=scales::percent_format(accuracy=1)) +
     theme(axis.title.y=element_blank(),
           legend.title=element_blank()) +
-    xlab(paste0(meas,' (WB Findex)')) 
+    xlab(paste0(meas,' (',source,')')) 
 
   # TODO: Add a caption with an explanatory note for variables that need it (defn of old, young, rich, poor, etc.)
   
 }
 
+# TODO: don't add countries to plot if there's no data for them
+# TODO: fail gracefully if I select a gap that isn't available for a certain variable
 
 
-# gap_plot('Rich/Poor','Borrowing',
-#          c('Kenya','Tanzania','Uganda','Ethiopia','Rwanda','Mali'))
+gap_plot('Male/Female','Internet use',
+        c('Algeria','Andorra','Angola','Argentina','Armenia'))

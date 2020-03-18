@@ -105,4 +105,19 @@ wb_findex <- read_excel('../DECA/data/Global Findex Database.xlsx',sheet=1) %>%
   dcast(country ~ short_name) %>%
   fix_adm0 
 
-write_csv(wb_findex,'findex.csv')
+###############################################################################
+# Just one gender gap variable from ITU; get that in there also
+###############################################################################
+itu_gender <- read_excel('../DECA/data/Individuals using the internet by gender_Jun2019.xlsx',skip=2) %>%
+  slice(1:115) %>%
+  mutate(Male=as.numeric(Male)/100,
+         Female=as.numeric(Female)/100) %>%
+  rename(country=1,internet_m=Male,internet_f=Female) %>%
+  select(country,internet_m,internet_f) %>%
+  fix_adm0
+
+###############################################################################
+# Save results
+###############################################################################
+full_join(itu_gender,wb_findex,by='country') %>%
+  write_csv('findex.csv')

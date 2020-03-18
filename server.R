@@ -45,7 +45,7 @@ shinyServer(function(input, output, session) {
         selectizeInput('gap_var','Select a variable:',choices=gap_vars),
         selectizeInput('gap_type','Select a gap type:',choices=gap_list),
         selectizeInput('country_list','Highlight countries:',choices=all_countries,
-                       multiple=TRUE)
+                        multiple=TRUE)
       )
     }
   })

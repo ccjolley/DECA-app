@@ -91,7 +91,12 @@ shinyServer(function(input, output, session) {
   })
   
   output$gapPlot <- renderPlot({
-    gap_plot(input$gap_type,input$gap_var,input$country_list)
+    gap_plot(input$gap_type,input$gap_var,input$country_list) +
+      theme(axis.text.x = element_text(size=15),
+            axis.text.y = element_text(size=15),
+            axis.title=element_text(size=17),
+            plot.caption = element_text(size=14),
+            title=element_text(size=20))
   })
   
   output$main_plot <- renderUI({

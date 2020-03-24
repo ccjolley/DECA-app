@@ -82,7 +82,8 @@ gap_plot <- function(gap,meas,country_list) {
     theme(axis.title.y=element_blank(),
           legend.title=element_blank()) +
     xlab(paste0(meas,' (',source,')')) +
-    labs(caption=gap_captions[which(gap_list==gap)])
+    labs(title=paste0(meas,' (',gap,')'),
+         caption=gap_captions[which(gap_list==gap)])
 
 }
 

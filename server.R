@@ -101,7 +101,8 @@ shinyServer(function(input, output, session) {
     } else if (input$plot_category == 'Scatter plot') {
       plotOutput('scatterPlot')
     } else if (input$plot_category == 'Gap plot') {
-      plotOutput('gapPlot')
+      heightstr <- paste0(25*length(input$country_list) + 50,'px')
+      plotOutput('gapPlot',width='auto',heigh=heightstr)
     }
   })
   

@@ -86,8 +86,6 @@ gap_plot <- function(gap,meas,country_list) {
 
 }
 
-# TODO: for some reason this doesn't resize like the summary plot does
-
 
 gap_plot('Male/Female','Mobile money',
         c('Cyprus','Finland','Brazil','Argentina'))

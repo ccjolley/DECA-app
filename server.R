@@ -44,8 +44,8 @@ shinyServer(function(input, output, session) {
       list(
         selectizeInput('gap_var','Select a variable:',choices=gap_vars),
         selectizeInput('gap_type','Select a gap type:',choices=gap_list),
-        selectizeInput('country_list','Highlight countries:',choices=all_countries,
-                        multiple=TRUE)
+        selectizeInput('country_list','Display countries:',choices=all_countries,
+                        multiple=TRUE,selected=c('Colombia','Kenya','Republic of Serbia','Nepal','Tunisia'))
       )
     }
   })
@@ -159,6 +159,7 @@ shinyServer(function(input, output, session) {
                                 '<a href="http://www.womanstats.org/">WomanStats</a><br>'))
     
     source_str <- filter(source_tbl,short %in% sources)$full %>% paste(collapse='')
+    # TODO: this isn't right for gap plot
     paste0('<b>Sources:</b><br><br>',source_str)
   })
   

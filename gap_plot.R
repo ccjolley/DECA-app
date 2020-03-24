@@ -63,15 +63,16 @@ gap_plot <- function(gap,meas,country_list) {
     rename(v1=2,v2=3) %>%
     mutate(m = (v1+v2)/2,
            country=fct_reorder(country,m)) %>%
-    select(-m)
+    select(-m) %>%
+    na.omit
   
   dots <- segs %>%
     melt %>%
     mutate(variable=ifelse(variable=='v1',lab1,lab2),
            variable=factor(variable,levels=c(lab1,lab2))) 
   if (meas=='Internet use') {
-    source <- 'ITU' }
-  else {
+    source <- 'ITU' 
+  } else {
     source <- 'WB Findex'
   }
   ggplot(segs) +
@@ -88,7 +89,7 @@ gap_plot <- function(gap,meas,country_list) {
   
 }
 
-# TODO: don't add countries to plot if there's no data for them
+# TODO: for some reason this doesn't resize like the summary plot does
 
 
 gap_plot('Male/Female','Mobile money',

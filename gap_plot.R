@@ -5,16 +5,15 @@ wb_findex <- read_csv('findex.csv') %>%
   select(-starts_with('barrier_'))
 
 # TODO: find another source on urban/rural population split so I can calculate urban levels
-# TODO: bring in any other gender gap data (e.g., from ITU) -- currently just uses Findex
 
 # A better plot for visualizing gender (and similar) gaps
 # Instead of showing a singe "gap score", show the absolute numbers in a barbell plot
 
-# TODO: need a way to filter the available country list based on the variables selected
-#       UNLESS this means that changing the plot variable resets the country list; then
-#       this probably isn't worth it -- just filter by countries in WB findex
-
 gap_list <- c('Male/Female','Rich/Poor','Educated/Uneducated','Old/Young','Employed/Unemployed','Overall/Rural')
+gap_captions <- c('','"Rich" = richest 40% of population, "Poor" = poorest 60% of population',
+                  '"Educated" = secondary or higher, "Uneducated" = primary or less',
+                  '"Old" = 25+ years, "Young" = 15-24 years','',
+                  'NOTE: WB Findex doesn\'t disaggregate urban populations, only rural and overall')
 gap_vars <- c('Account ownership','Borrowing','Digital payments','Mobile money','Internet use')
 
 get_gap_vars <- function(gap,meas) {
@@ -79,14 +78,12 @@ gap_plot <- function(gap,meas,country_list) {
     geom_segment(aes(x=v1,xend=v2,y=country,yend=country),color='#6C6463') +
     geom_point(data=dots,aes(x=value,y=country,color=variable),size=5) +
     theme_USAID + colors_USAID +
-    xlab('Mobile money usage (WB Findex)') +
     scale_x_continuous(labels=scales::percent_format(accuracy=1)) +
     theme(axis.title.y=element_blank(),
           legend.title=element_blank()) +
-    xlab(paste0(meas,' (',source,')')) 
+    xlab(paste0(meas,' (',source,')')) +
+    labs(caption=gap_captions[which(gap_list==gap)])
 
-  # TODO: Add a caption with an explanatory note for variables that need it (defn of old, young, rich, poor, etc.)
-  
 }
 
 # TODO: for some reason this doesn't resize like the summary plot does

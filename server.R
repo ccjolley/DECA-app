@@ -44,7 +44,7 @@ shinyServer(function(input, output, session) {
       list(
         selectizeInput('gap_var','Select a variable:',choices=gap_vars),
         selectizeInput('gap_type','Select a gap type:',choices=gap_list),
-        selectizeInput('country_list','Display countries:',choices=all_countries,
+        selectizeInput('country_list','Display countries:',choices=wb_findex$country,
                         multiple=TRUE,selected=c('Colombia','Kenya','Republic of Serbia','Nepal','Tunisia'))
       )
     }

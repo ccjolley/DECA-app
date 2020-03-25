@@ -29,23 +29,6 @@ get_gap_vars <- function(gap,meas) {
   c(var1,var2)
 }
 
-available_countries_gap <- function(gap,meas) {
-  gv <- get_gap_vars(gap,meas)
-  tmp <- wb_findex %>% 
-    select(country,gv[1],gv[2]) %>%
-    na.omit
-  sort(tmp$country)
-  # TODO: return countries for which this column isn't NA.
-}
-
-available_gaps <- function(meas) {
-  if (meas != 'Internet use') {
-    gap_list
-  } else {
-    'Male/Female'
-  }
-}
-
 gap_plot <- function(gap,meas,country_list) {
   if (meas == 'Internet use' && gap != 'Male/Female') {
     stop('Only the Male/Female gap is available for the ITU Internet use variable. Please choose another plot.')

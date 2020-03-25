@@ -9,16 +9,16 @@ wb_findex <- read_csv('findex.csv') %>%
 # A better plot for visualizing gender (and similar) gaps
 # Instead of showing a singe "gap score", show the absolute numbers in a barbell plot
 
-gap_list <- c('Male/Female','Rich/Poor','Educated/Uneducated','Old/Young','Employed/Unemployed','Overall/Rural')
+gap_list <- c('Male/Female','Rich/Poor','Educated/Uneducated','Old/Young','Employed/Unemployed','Urban/Rural')
 gap_captions <- c('','"Rich" = richest 40% of population, "Poor" = poorest 60% of population',
                   '"Educated" = secondary or higher, "Uneducated" = primary or less',
                   '"Old" = 25+ years, "Young" = 15-24 years','',
-                  'NOTE: WB Findex doesn\'t disaggregate urban populations, only rural and overall')
+                  'NOTE: WB Findex doesn\'t disaggregate urban populations; urban values inferred')
 gap_vars <- c('Account ownership','Borrowing','Digital payments','Mobile money','Internet use')
 
 get_gap_vars <- function(gap,meas) {
   gap_types <- tibble(gap_label=gap_list,
-                      suffix1=c('_m','_rich','_ed','_old','_labor',''),
+                      suffix1=c('_m','_rich','_ed','_old','_labor','_urban'),
                       suffix2=c('_f','_poor','_uned','_young','_nolabor','_rural'))
   measurements <- tibble(meas_label=gap_vars,
                          prefix=c('acct','borrow','dig_pay','mm','internet'))

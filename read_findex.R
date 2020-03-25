@@ -1,4 +1,5 @@
 library(tidyverse)
+source('utils.R')
 
 ###############################################################################
 # Read findex data
@@ -104,6 +105,23 @@ wb_findex <- read_excel('../DECA/data/Global Findex Database.xlsx',sheet=1) %>%
   select(country,short_name,value) %>%
   dcast(country ~ short_name) %>%
   fix_adm0 
+
+## Read in urbanization rate; use this to back-calculate the urban side of gap
+urban <- read_csv('API_SP.URB.TOTL.IN.ZS_DS2_en_csv_v2_888117.csv',skip=4) %>%
+  select(1,63) %>%
+  rename(country=1,urban=2) %>%
+  mutate(urban = 0.01*urban) %>%
+  fix_adm0
+
+# missing values for Kosovo and Taiwan; fill in with global average
+world_urban <- filter(urban,country=='World')$urban
+
+wb_findex <- left_join(wb_findex,urban,by='country') %>%
+  mutate(urban=ifelse(is.na(urban),world_urban,urban),
+         acct_urban = (acct - (1-urban)*acct_rural)/urban,
+         borrow_urban = (borrow - (1-urban)*borrow_rural)/urban,
+         dig_pay_urban = (dig_pay - (1-urban)*dig_pay_rural)/urban,
+         mm_urban = (mm - (1-urban)*mm_rural)/urban)
 
 ###############################################################################
 # Just one gender gap variable from ITU; get that in there also
